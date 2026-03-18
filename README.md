@@ -34,34 +34,33 @@ Because this application fetches data from an external API (Google Sheets), it c
    cd stem-comm-demo
    ```
 2. Start a local Python server:
-```bash
-python3 -m http.server 8000
-View the application:
-Open your browser and navigate to http://localhost:8000
-```
+   ```bash
+   python3 -m http.server 8000
+   View the application:
+   Open your browser and navigate to http://localhost:8000
+   ```
 
 ## Content Management Guide
 To update the website content, you do not need to edit the codebase. All content is driven by the Master Google Sheet.
 
-* Adding a New File
+Adding a New File
   
-  Upload fike in drive folder
+* Upload fike in drive folder
   
-  Open the connected Master Google Sheet.
+* Open the connected Master Google Sheet.
 
-  Add a new row.
+* Add a new row.
 
-  Copy paste the file from drive in 'Title' column
+* Copy paste the file from drive in 'Title' column
 
-  Click on the 'STEM Library Tools' button to run the script, it will populate rest of the values
+* Click on the 'STEM Library Tools' button to run the script, it will populate rest of the values
 
-  The website will automatically pull the new file within a few minutes depending on Google's cache.
+The website will automatically pull the new file within a few minutes depending on Google's cache.
 
 ## Known Limitations
 Website uses caching, to load latest content:
-  In developer tools console tab, execute below command
+* In developer tools console tab, execute below command
   ```
   sessionStorage.clear()
   ```
-  then hard refresh the page
-  
+* Then hard refresh the page
