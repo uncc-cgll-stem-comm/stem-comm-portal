@@ -2,7 +2,7 @@
 
 A lightweight, high-performance dynamic web application built to organize and display STEM Communication training materials. 
 
-** [View Live Demo](https://shubhamsakharegem.github.io/stem-comm-demo/)**
+[View Live Demo](https://shubhamsakharegem.github.io/stem-comm-demo/)
 
 ## Architecture
 
