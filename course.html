@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Viewer - STEM Library</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+    <header>
+        <a href="index.html">← Back to Library</a>
+    </header>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <h2 id="dynamic-course-title">Loading...</h2>
+            <div id="module-container"></div>
+        </aside>
+
+        <main class="viewer-pane">
+            <div id="empty-state" class="empty-state">
+                <h3>Select a document</h3>
+                <p>Choose a file from the sidebar to view it here.</p>
+            </div>
+            <iframe id="content-frame" src="" style="display: none;"></iframe>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
