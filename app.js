@@ -27,11 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function routePage(data) {
     const path = window.location.pathname;
     
-    // Check if we are on index.html OR the root directory (/)
-    if (path.includes('index.html') || path === '/' || path.endsWith('/Website/')) {
-        buildHomePage(data);
-    } else if (path.includes('course.html')) {
+    // If we are specifically on the course viewer page
+    if (path.includes('course.html')) {
         buildCoursePage(data);
+    } 
+    // Otherwise, default to the homepage layout
+    else {
+        buildHomePage(data);
     }
 }
 
