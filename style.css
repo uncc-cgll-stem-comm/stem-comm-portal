@@ -15,6 +15,7 @@ body {
     color: var(--text-main); 
     line-height: 1.6; 
     overflow-y: scroll; /* Add this to stop the scrollbar layout shift! */
+    overflow-x: hidden;
 }
 
 
@@ -349,4 +350,81 @@ body {
 .event-card:hover { 
     transform: translateY(-5px); 
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+}
+
+
+/* ----------------------------------- */
+/* Mobile Responsiveness (Screens < 768px) */
+/* ----------------------------------- */
+@media (max-width: 768px) {
+    
+    /* 1. Fix the Header Collision */
+    .header-tabs {
+        flex-direction: column; /* Stacks the logo on top of the tabs */
+        gap: 1rem;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .tab-links {
+        flex-wrap: wrap; /* Allows tabs to drop to a new line if needed */
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .tab-links button {
+        font-size: 0.95rem; /* Slightly smaller text for mobile */
+    }
+
+    /* 2. Fix the Hero Image (Scales poster naturally without cropping) */
+    .hero-image-container {
+        height: auto; /* Removes the fixed height */
+        display: block; /* Removes flexbox to allow natural scaling */
+    }
+    
+    .hero-image-container img {
+        position: relative; /* Takes it out of the background */
+        height: auto; /* Allows the image to scale its height naturally */
+        object-fit: contain; /* Forces the whole image to fit on the screen */
+        opacity: 1; /* Makes the poster fully visible */
+    }
+    
+    .hero-overlay h1 {
+        font-size: 2.2rem;
+        display: none; /* Optional: Hides the overlapping text since your poster already has text! */
+    }
+
+    /* 3. Fix the Grids (Forces 1 column on narrow screens) */
+    .cards-container, .course-grid {
+        grid-template-columns: 1fr;
+        padding: 1.5rem 5%;
+    }
+
+    /* 4. Fix Event Details Spacing */
+    .event-details-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .event-details-header h1 {
+        font-size: 2rem;
+    }
+
+    /* 5. Fix the Course Viewer Layout */
+    .app-layout {
+        flex-direction: column; /* Stacks the sidebar on top of the viewer */
+        height: auto; 
+    }
+    
+    .sidebar {
+        width: 100%;
+        max-height: 250px; /* Prevents the sidebar from taking up the whole screen */
+        border-right: none;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .viewer-pane {
+        padding: 1rem;
+        min-height: 500px; /* Ensures the document iframe has enough room */
+    }
 }
