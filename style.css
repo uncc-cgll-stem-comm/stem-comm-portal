@@ -10,23 +10,125 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
 
-body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+body { 
+    background-color: var(--bg-color); 
+    color: var(--text-main); 
+    line-height: 1.6; 
+    overflow-y: scroll; /* Add this to stop the scrollbar layout shift! */
+}
 
-/* Global Header */
-header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, #003825 100%);
+
+/* ----------------------------------- */
+/* Official UNCC Branded Header        */
+/* ----------------------------------- */
+.header-tabs {
+    /* Deep UNCC green fading to black on the right */
+    background: linear-gradient(to right, #005035 0%, #111111 100%);
     color: white;
-    padding: 1.5rem 5%;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 1.25rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-header a { color: white; text-decoration: none; font-weight: 600; font-size: 1.25rem; }
+.logo-img {
+    height: 45px; /* Keeps the logo cleanly proportioned */
+    display: block;
+}
+
+.tab-links { 
+    list-style: none; 
+    display: flex; 
+    gap: 2.5rem; /* Wide spacing like the official site */
+    margin: 0;
+    align-items: center;
+}
+
+.tab-links button {
+    background: transparent;
+    color: white;
+    border: none;
+    /* We use a transparent bottom border so the text doesn't jump when the gold line appears */
+    border-bottom: 3px solid transparent; 
+    padding: 0.2rem 0; 
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-style: italic;
+}
+
+/* Subtle fade when hovering over inactive tabs */
+.tab-links button:hover { 
+    color: #e2e8f0; 
+}
+
+/* The Active Tab - Pure white text with the thick UNCC Gold underline */
+.tab-links button.active {
+    border-bottom: 3px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
 
 /* ----------------------------------- */
-/* index.html - Homepage Styling       */
+/* Home & Events View Styling          */
+/* ----------------------------------- */
+.home-block {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin: 2rem auto;
+    max-width: 800px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--primary-color);
+}
+
+.home-block h2 { color: var(--primary-color); margin-bottom: 1rem; font-size: 1.8rem;}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.event-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--secondary-color);
+    transition: transform 0.2s ease;
+}
+
+.event-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+
+.event-card h3 { color: var(--primary-color); font-size: 1.4rem; margin-bottom: 1rem; }
+.event-card p { margin-bottom: 0.5rem; }
+
+.event-card button {
+    margin-top: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+.event-card button:hover { background: #003825; }
+
+
+/* ----------------------------------- */
+/* index.html - Old Library Styling    */
 /* ----------------------------------- */
 .hero { text-align: center; padding: 4rem 1rem 2rem; }
 .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary-color); }
@@ -54,17 +156,13 @@ header a { color: white; text-decoration: none; font-weight: 600; font-size: 1.2
     border-top: 4px solid var(--secondary-color);
 }
 
-.course-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-}
-
+.course-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
 .course-card h2 { color: var(--primary-color); font-size: 1.4rem; margin-bottom: 0.5rem; }
 
 /* ----------------------------------- */
 /* course.html - Viewer Styling        */
 /* ----------------------------------- */
-.app-layout { display: flex; height: calc(100vh - 76px); } /* 76px is header height */
+.app-layout { display: flex; height: calc(100vh - 76px); } 
 
 .sidebar {
     width: 350px;
@@ -97,3 +195,112 @@ header a { color: white; text-decoration: none; font-weight: 600; font-size: 1.2
 .viewer-pane iframe { width: 100%; height: 100%; border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: white; }
 
 .empty-state { text-align: center; margin: auto; color: var(--text-muted); }
+
+/* ----------------------------------- */
+/* Home Page - Hero & Mission Layout   */
+/* ----------------------------------- */
+.hero-image-container {
+    width: 100%;
+    height: 450px;
+    background-color: #002015;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5; /* Dims the image slightly so the white text is readable */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.hero-overlay {
+    position: relative;
+    z-index: 2;
+    padding: 0 10%;
+    color: white;
+}
+
+.hero-overlay h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.mission-container {
+    padding: 4rem 10%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mission-container h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.mission-text p {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--text-main);
+    white-space: pre-wrap; /* Honors the line breaks from your Google Sheet */
+}
+
+/* ----------------------------------- */
+/* Event Details Page                  */
+/* ----------------------------------- */
+.event-details-container {
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 3rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.back-btn {
+    background: transparent;
+    color: var(--primary-color);
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    padding: 0;
+}
+
+.back-btn:hover { text-decoration: underline; }
+
+.event-details-header h1 {
+    font-size: 2.8rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.detail-meta {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#detail-image {
+    width: 100%;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 2.5rem;
+}
+
+.detail-description {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    white-space: pre-wrap; /* Honors the line breaks from your Google Sheet */
+}

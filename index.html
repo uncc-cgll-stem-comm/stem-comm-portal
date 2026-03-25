@@ -3,22 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STEM Communication Library</title>
+    <title>CGLL STEM Portal</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-    <header>
-        <a href="index.html">STEM Comm Library</a>
-    </header>
+    
+    <!-- Navigation Header (Official Branding) -->
+    <nav class="header-tabs">
+        <div class="logo">
+            <img src="images/uncc-logo.png" alt="CGLL Logo" class="logo-img">
+        </div>
+        <ul class="tab-links">
+            <li><button onclick="switchTab('home')" id="btn-home" class="active">HOME</button></li>
+            <li><button onclick="switchTab('events')" id="btn-events">EVENTS</button></li>
+            <li><button onclick="switchTab('library')" id="btn-library">COURSE LIBRARY</button></li>
+        </ul>
+    </nav>
 
-    <section class="hero">
-        <h1>Resource Library</h1>
-        <p>Select a training module below to access course materials, lecture videos, and reading resources.</p>
-    </section>
+    <!-- View Containers -->
+    <main id="main-content">
+        
+        <!-- 1. HOME VIEW (Matches the UNCC Academics layout) -->
+        <section id="view-home" class="tab-view active-view">
+            
+            <div class="hero-image-container">
+                <img id="home-hero-img" src="images/stem-training-banner.png" alt="Hero Background">
+            </div>
 
-    <main class="course-grid" id="course-grid">
-        <p style="text-align: center; width: 100%;">Loading courses...</p>
+            <div class="mission-container">
+                <h2 id="home-mission-title">Our Mission</h2>
+                <div id="home-mission-text" class="mission-text"></div>
+            </div>
+
+        </section>
+
+        <!-- 2. EVENTS VIEW (The Grid) -->
+        <section id="view-events" class="tab-view" style="display: none;">
+            
+            <!-- NEW: Upgraded Hero Header to match the Library Tab -->
+            <section class="hero">
+                <h1>Upcoming Events</h1>
+                <p>Browse our upcoming workshops, speaker sessions, and STEM training events below.</p>
+            </section>
+
+            <div id="events-grid" class="cards-container">
+                <!-- JS will inject Event Cards here -->
+            </div>
+            
+        </section>
+
+        <!-- NEW: EVENT DETAILS VIEW (The Full Page) -->
+        <section id="view-event-details" class="tab-view" style="display: none;">
+            <div class="event-details-container">
+                <button onclick="switchTab('events')" class="back-btn">← Back to Events</button>
+                <div class="event-details-header">
+                    <h1 id="detail-title">Event Title</h1>
+                    <p class="detail-meta" id="detail-meta">Date | Location | Speaker</p>
+                </div>
+                <div class="detail-description" id="detail-description"></div>
+            </div>
+        </section>
+
+        <!-- 3. LIBRARY VIEW (Untouched) -->
+        <section id="view-library" class="tab-view" style="display: none;">
+            <section class="hero">
+                <h1>Resource Library</h1>
+                <p>Select a training module below to access course materials, lecture videos, and reading resources.</p>
+            </section>
+            <div class="course-grid" id="course-grid">
+                <p style="text-align: center; width: 100%;">Loading courses...</p>
+            </div>
+        </section>
+
+        <!-- NEW: COURSE VIEWER VIEW (The Sidebar and Iframe) -->
+        <section id="view-course-details" class="tab-view" style="display: none;">
+            
+            <div class="app-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="sidebar">
+                    <button onclick="switchTab('library')" class="back-btn">← Back to Library</button>
+                    <h2 id="dynamic-course-title">Course Title</h2>
+                    <div id="module-container">
+                        <!-- JS will inject the modules and files here -->
+                    </div>
+                </aside>
+                
+                <!-- Main Viewer Area -->
+                <main class="viewer-pane">
+                    <div class="empty-state" id="empty-state">
+                        <h3>Select a document</h3>
+                        <p>Choose a file from the sidebar to view it here.</p>
+                    </div>
+                    <!-- The hidden iframe that will display the Google Drive files -->
+                    <iframe id="content-frame" src="" style="display: none;"></iframe>
+                </main>
+            </div>
+
+        </section>
+
     </main>
 
     <script src="app.js"></script>
