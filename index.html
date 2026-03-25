@@ -33,7 +33,10 @@
 
             <div class="mission-container">
                 <h2 id="home-mission-title">Our Mission</h2>
-                <div id="home-mission-text" class="mission-text"></div>
+                <div id="home-mission-text" class="mission-text">
+                    <!-- NEW: Loading Placeholder -->
+                    <p style="text-align: center; width: 100%; color: var(--text-muted); font-style: italic;">Loading portal content...</p>
+                </div>
             </div>
 
         </section>
@@ -41,19 +44,19 @@
         <!-- 2. EVENTS VIEW (The Grid) -->
         <section id="view-events" class="tab-view" style="display: none;">
             
-            <!-- NEW: Upgraded Hero Header to match the Library Tab -->
             <section class="hero">
                 <h1>Upcoming Events</h1>
                 <p>Browse our upcoming workshops, speaker sessions, and STEM training events below.</p>
             </section>
 
             <div id="events-grid" class="cards-container">
-                <!-- JS will inject Event Cards here -->
+                <!-- NEW: Loading Placeholder -->
+                <p style="text-align: center; width: 100%; color: var(--text-muted); font-style: italic;">Loading upcoming events...</p>
             </div>
             
         </section>
 
-        <!-- NEW: EVENT DETAILS VIEW (The Full Page) -->
+        <!-- EVENT DETAILS VIEW (The Full Page) -->
         <section id="view-event-details" class="tab-view" style="display: none;">
             <div class="event-details-container">
                 <button onclick="switchTab('events')" class="back-btn">← Back to Events</button>
@@ -65,18 +68,19 @@
             </div>
         </section>
 
-        <!-- 3. LIBRARY VIEW (Untouched) -->
+        <!-- 3. LIBRARY VIEW -->
         <section id="view-library" class="tab-view" style="display: none;">
             <section class="hero">
                 <h1>Resource Library</h1>
                 <p>Select a training module below to access course materials, lecture videos, and reading resources.</p>
             </section>
             <div class="course-grid" id="course-grid">
-                <p style="text-align: center; width: 100%;">Loading courses...</p>
+                <!-- Existing Loading Placeholder -->
+                <p style="text-align: center; width: 100%; color: var(--text-muted); font-style: italic;">Loading courses...</p>
             </div>
         </section>
 
-        <!-- NEW: COURSE VIEWER VIEW (The Sidebar and Iframe) -->
+        <!-- COURSE VIEWER VIEW (The Sidebar and Iframe) -->
         <section id="view-course-details" class="tab-view" style="display: none;">
             
             <div class="app-layout">
