@@ -60,34 +60,52 @@ function switchTab(tabName) {
     }
 }
 
-
 // ==========================================
-// 4. THE DATA ENGINE (Downloads & Caches)
+// 4. THE DATA ENGINE (With 5-Minute TTL Cache)
 // ==========================================
 function fetchData(url, cacheKey, renderCallback) {
-    // Safety check: If URL is missing, don't try to fetch
-    if (url.includes("YOUR_")) {
-        console.warn(`Waiting for real URL for ${cacheKey}`);
-        return;
-    }
+    // Safety check
+    if (url.includes("YOUR_")) return;
 
-    const cachedData = sessionStorage.getItem(cacheKey);
+    const cachedStr = sessionStorage.getItem(cacheKey);
+    const CACHE_TIME_LIMIT = 5 * 60 * 1000; // 5 minutes in milliseconds
 
-    if (cachedData) {
-        console.log(`Loaded ${cacheKey} from Browser Cache!`);
-        renderCallback(JSON.parse(cachedData));
-    } else {
-        console.log(`Fetching ${cacheKey} from Google...`);
-        Papa.parse(url, {
-            download: true,
-            header: true,
-            complete: function(results) {
-                const data = results.data;
-                sessionStorage.setItem(cacheKey, JSON.stringify(data));
-                renderCallback(data);
+    if (cachedStr) {
+        const cachedObj = JSON.parse(cachedStr);
+        
+        // Ensure the cache has our new timestamp format before checking math
+        if (cachedObj.timestamp) {
+            const isCacheValid = (Date.now() - cachedObj.timestamp) < CACHE_TIME_LIMIT;
+
+            if (isCacheValid) {
+                console.log(`Loaded ${cacheKey} instantly from Cache!`);
+                renderCallback(cachedObj.data);
+                return; // Exit the function early, we don't need to fetch!
+            } else {
+                console.log(`Cache for ${cacheKey} is older than 5 mins. Fetching fresh data...`);
             }
-        });
+        }
+    } else {
+        console.log(`First visit: Fetching ${cacheKey} from Google...`);
     }
+
+    // If no valid cache was found, fetch fresh data from the Google Sheet
+    Papa.parse(url, {
+        download: true,
+        header: true,
+        complete: function(results) {
+            const data = results.data;
+            
+            // Save BOTH the data and the exact time we downloaded it
+            const cacheData = {
+                timestamp: Date.now(),
+                data: data
+            };
+            
+            sessionStorage.setItem(cacheKey, JSON.stringify(cacheData));
+            renderCallback(data);
+        }
+    });
 }
 
 
@@ -114,7 +132,7 @@ function renderHomeView(data) {
     });
 }
 
-// Render the Events Tab
+// Render the Events Tab (Updated for Clickable Cards)
 function renderEventsView(data) {
     const grid = document.getElementById('events-grid');
     grid.innerHTML = ''; 
@@ -122,20 +140,24 @@ function renderEventsView(data) {
     data.forEach((row, index) => {
         if (!row.Event_Name) return; 
 
+        // 1. Create the card container
         const card = document.createElement('div');
         card.className = 'event-card'; 
+        
+        // 2. NEW HTML structure: Remove button, add "Click to view details" text
         card.innerHTML = `
             <h3>${row.Event_Name}</h3>
             <p><strong>Date:</strong> ${row.Date_Time}</p>
             <p><strong>Location:</strong> ${row.Location}</p>
-            <button id="btn-event-${index}">View Details</button>
+            <p class="click-details-text">Click to view details</p>
         `;
-        grid.appendChild(card);
         
-        // Listen for the click and send the row data to our new page!
-        document.getElementById(`btn-event-${index}`).addEventListener('click', () => {
+        // 3. Attach click listener to the WHOLE card
+        card.addEventListener('click', () => {
             showEventDetails(row);
         });
+        
+        grid.appendChild(card);
     });
 }
 

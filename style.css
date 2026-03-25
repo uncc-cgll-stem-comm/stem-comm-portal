@@ -97,34 +97,36 @@ body {
     margin: 0 auto;
 }
 
+/* Updated Event Card Styling - Matches Course Card behaviour */
 .event-card {
     background: var(--card-bg);
     border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    /* Updated Box Shadow to match Course Card subtle feel */
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
     border-top: 4px solid var(--secondary-color);
-    transition: transform 0.2s ease;
+    cursor: pointer; /* CRUCIAL: Makes whole card look clickable */
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
-.event-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+/* Keeping hover styles as previously restored and animated */
+.event-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.event-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
 
-.event-card h3 { color: var(--primary-color); font-size: 1.4rem; margin-bottom: 1rem; }
-.event-card p { margin-bottom: 0.5rem; }
+/* Updated spacing to match Library Card structure */
+.event-card h3 { color: var(--primary-color); font-size: 1.4rem; margin-bottom: 0.5rem; }
+.event-card p { margin-bottom: 0.3rem; font-size: 0.95rem; }
 
-.event-card button {
+/* Style for the NEW muted "Click to view details" text */
+.event-card .click-details-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
     margin-top: 1rem;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    width: 100%;
-    transition: background 0.2s;
+    margin-bottom: 0;
+    display: block; 
 }
-
-.event-card button:hover { background: #003825; }
 
 
 /* ----------------------------------- */
@@ -303,4 +305,48 @@ body {
     font-size: 1.15rem;
     line-height: 1.8;
     white-space: pre-wrap; /* Honors the line breaks from your Google Sheet */
+}
+
+/* ----------------------------------- */
+/* Animations & Transitions            */
+/* ----------------------------------- */
+
+/* 1 & 3: Fast fade-in for all Tabs and Detail Views */
+@keyframes fastFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tab-view {
+    animation: fastFadeIn 0.25s ease-in-out;
+}
+
+/* 2: Subtle slide-up and fade-in for all Cards */
+/* 2: Subtle slide-up and fade-in for all Cards */
+@keyframes slideUpFade {
+    from { 
+        opacity: 0; 
+        transform: translateY(15px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Use 'backwards' instead of 'forwards' so the hover effect isn't blocked! */
+.event-card, .course-card {
+    animation: slideUpFade 0.35s ease-out backwards;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Keeps the hover smooth */
+}
+
+/* Restoring your beautiful, original hover effects */
+.course-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+}
+
+.event-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
 }
