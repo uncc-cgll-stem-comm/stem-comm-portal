@@ -524,3 +524,38 @@ body {
     border-bottom: 1px solid #e2e8f0;
 }
 .custom-table tr:last-child td { border-bottom: none; }
+
+/* Mobile Optimization for Course Viewer - CORRECTED CLASSES */
+@media (max-width: 768px) {
+    /* 1. Stack the sidebar and viewer vertically */
+    .app-layout {
+        display: flex;
+        flex-direction: column;
+        height: auto !important; 
+    }
+
+    /* 2. Force sidebar and viewer to full width */
+    .sidebar, .viewer-pane {
+        width: 100% !important;
+        flex: none;
+    }
+
+    /* 3. Limit sidebar height so it doesn't bury the viewer */
+    .sidebar {
+        max-height: 400px; /* Adjust this if you want the list longer/shorter */
+        border-right: none;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    /* 4. Ensure viewer has enough height to be readable */
+    .viewer-pane {
+        height: 600px !important; 
+        padding: 10px;
+    }
+
+    /* 5. Force the iframe to fill the viewer container */
+    .viewer-pane iframe {
+        height: 100% !important;
+        width: 100% !important;
+    }
+}

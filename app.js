@@ -291,6 +291,11 @@ function showCourseDetails(targetCourse, fullData) {
                 document.getElementById('empty-state').style.display = 'none';
                 iframe.style.display = 'block';
                 iframe.src = file.Link; 
+
+                // Inside your itemBox.onclick in app.js
+                if (window.innerWidth < 768) {
+                    document.querySelector('.viewer-pane').scrollIntoView({ behavior: 'smooth' });
+                }
             };
 
             // 5. Put both the title and button INSIDE the box
