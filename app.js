@@ -8,7 +8,7 @@ const HOME_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTh_-hmulO
 
 const EVENTS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTh_-hmulO3Kxhklijvzj-iaFz_3PcY7xfGThmwHRf59cl5ejTfFTj9H7BTye_8EAa_bqzmDQL4C4zS/pub?gid=14635706&single=true&output=csv";
 
-const LIBRARY_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwubYde99vMNyDvBPx1FoQL6rTQBUMa5EqhhYKPaCThsUdJIvGmiPsV9vUWuJZtJ8KFevz-8Cc5aqh/pub?gid=399989883&single=true&output=csv";
+const LIBRARY_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTh_-hmulO3Kxhklijvzj-iaFz_3PcY7xfGThmwHRf59cl5ejTfFTj9H7BTye_8EAa_bqzmDQL4C4zS/pub?gid=399989883&single=true&output=csv";
 
 // ==========================================
 // 2. INITIALIZATION & ROUTING
@@ -61,53 +61,34 @@ function switchTab(tabName) {
 }
 
 // ==========================================
-// 4. THE DATA ENGINE (With 5-Minute TTL Cache)
+// 4. THE DATA ENGINE (No Caching)
 // ==========================================
 function fetchData(url, cacheKey, renderCallback) {
-    // Safety check
+    // Safety check for placeholder URLs
     if (url.includes("YOUR_")) return;
 
-    const cachedStr = sessionStorage.getItem(cacheKey);
-    const CACHE_TIME_LIMIT = 5 * 60 * 1000; // 5 minutes in milliseconds
+    console.log(`Fetching fresh data from Google for: ${cacheKey}...`);
 
-    if (cachedStr) {
-        const cachedObj = JSON.parse(cachedStr);
-        
-        // Ensure the cache has our new timestamp format before checking math
-        if (cachedObj.timestamp) {
-            const isCacheValid = (Date.now() - cachedObj.timestamp) < CACHE_TIME_LIMIT;
-
-            if (isCacheValid) {
-                console.log(`Loaded ${cacheKey} instantly from Cache!`);
-                renderCallback(cachedObj.data);
-                return; // Exit the function early, we don't need to fetch!
-            } else {
-                console.log(`Cache for ${cacheKey} is older than 5 mins. Fetching fresh data...`);
-            }
-        }
-    } else {
-        console.log(`First visit: Fetching ${cacheKey} from Google...`);
-    }
-
-    // If no valid cache was found, fetch fresh data from the Google Sheet
-    Papa.parse(url, {
-        download: true,
-        header: true,
-        complete: function(results) {
-            const data = results.data;
-            
-            // Save BOTH the data and the exact time we downloaded it
-            const cacheData = {
-                timestamp: Date.now(),
-                data: data
-            };
-            
-            sessionStorage.setItem(cacheKey, JSON.stringify(cacheData));
-            renderCallback(data);
-        }
-    });
+    // Fetch fresh data every time, forcing the browser to ignore its local disk cache
+    fetch(url, { cache: "no-store" }) 
+        .then(response => {
+            if (!response.ok) throw new Error("Google Sheets fetch failed");
+            return response.text(); 
+        })
+        .then(csvText => {
+            // Hand the raw text straight to PapaParse
+            Papa.parse(csvText, {
+                header: true,
+                complete: function(results) {
+                    // Immediately render the freshly parsed data (no saving to memory)
+                    renderCallback(results.data);
+                }
+            });
+        })
+        .catch(error => {
+            console.error(`Error downloading data for ${cacheKey}:`, error);
+        });
 }
-
 
 // ==========================================
 // 5. RENDER LOGIC FOR EACH VIEW
@@ -203,39 +184,73 @@ function renderLibraryView(data) {
 // ==========================================
 // 6. COURSE VIEWER PAGE LOGIC (course.html)
 // ==========================================
-// NEW: Render the specific Course Viewer Page
+// Helper to convert G-Drive viewer links to direct download links
+function getDownloadLink(url) {
+    if (!url) return '#';
+    const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (idMatch && idMatch[1]) {
+        return `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
+    }
+    return url; 
+}
+
+// Render the specific Course Viewer Page
 function showCourseDetails(targetCourse, fullData) {
-    // 1. Hide all normal tabs
-    document.querySelectorAll('.tab-view').forEach(view => {
-        view.style.display = 'none';
-    });
-    
-    // 2. Show just the course viewer container
+    document.querySelectorAll('.tab-view').forEach(view => view.style.display = 'none');
     document.getElementById('view-course-details').style.display = 'block';
 
-    // 3. Reset the viewer iframe (so the last viewed document doesn't show up)
     document.getElementById('empty-state').style.display = 'block';
     const iframe = document.getElementById('content-frame');
     iframe.style.display = 'none';
     iframe.src = "";
 
-    // 4. Set the Sidebar Title
     document.getElementById('dynamic-course-title').innerText = targetCourse;
 
-    // 5. Filter the spreadsheet data down to ONLY this specific course
     const courseData = fullData.filter(row => row.Course === targetCourse);
     
-    // 6. Group files by Module
     const modules = {};
     courseData.forEach(row => {
         if (!modules[row.Module]) modules[row.Module] = [];
         modules[row.Module].push(row);
     });
 
-    // 7. Build the Sidebar UI
     const container = document.getElementById('module-container');
-    container.innerHTML = ''; // Clear previous course's sidebar
+    container.innerHTML = ''; 
     
+    // NEW: Let's peek at exactly what the browser sees!
+    console.log("Here is the first row of data:", courseData[0]);
+
+    const folderLink = courseData[0].Course_Folder_Link;
+
+   // --- NEW: "Download All" Button (With SVG Icon) ---
+    const downloadAllBtn = document.createElement('button');
+    downloadAllBtn.className = 'download-all-btn';
+    
+    // Using innerHTML to inject a professional SVG right next to the text
+    downloadAllBtn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download Full Course from Google Drive
+    `;
+    
+    downloadAllBtn.onclick = () => {
+        const folderLink = courseData[0].Course_Folder_Link;
+
+        if (folderLink) {
+            downloadAllBtn.onclick = () => {
+                window.open(folderLink, '_blank');
+            };
+        } else {
+            // Fallback just in case they forgot to add a folder link in the spreadsheet
+            downloadAllBtn.style.display = 'none'; 
+        }
+    };
+    container.appendChild(downloadAllBtn);
+
+    // --- Generate Modules and Individual Files ---
     for (const moduleName in modules) {
         const group = document.createElement('div');
         group.className = 'module-group';
@@ -248,21 +263,40 @@ function showCourseDetails(targetCourse, fullData) {
         modules[moduleName].forEach(file => {
             if (!file.Title) return; 
 
-            const item = document.createElement('div');
-            item.className = 'file-item';
-            item.innerText = file.Title;
-            
-            // Handle clicking a file in the sidebar
-            item.onclick = () => {
+            // 1. The main container box (This is now the clickable area)
+            const itemBox = document.createElement('div');
+            itemBox.className = 'file-item';
+
+            // 2. The Title Text
+            const titleText = document.createElement('span');
+            titleText.className = 'file-title';
+            titleText.innerText = file.Title;
+
+            // 3. The Professional SVG Download Button
+            const dlBtn = document.createElement('a');
+            dlBtn.href = getDownloadLink(file.Link);
+            dlBtn.className = 'download-icon-btn';
+            dlBtn.target = '_blank';
+            dlBtn.title = "Download this file";
+            // Professional Cloud Download SVG
+            dlBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+
+            // 4. Handle clicking the box to view the file
+            itemBox.onclick = (e) => {
+                // IMPORTANT: If they clicked the download button, don't load the iframe!
+                if(e.target.closest('.download-icon-btn')) return;
+
                 document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
-                item.classList.add('active');
-                
+                itemBox.classList.add('active');
                 document.getElementById('empty-state').style.display = 'none';
                 iframe.style.display = 'block';
                 iframe.src = file.Link; 
             };
-            
-            group.appendChild(item);
+
+            // 5. Put both the title and button INSIDE the box
+            itemBox.appendChild(titleText);
+            itemBox.appendChild(dlBtn);
+            group.appendChild(itemBox);
         });
 
         container.appendChild(group);

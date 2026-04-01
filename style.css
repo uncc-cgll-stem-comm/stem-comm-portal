@@ -180,19 +180,93 @@ body {
 .module-group { margin-bottom: 1.5rem; }
 .module-title { font-weight: 600; color: var(--text-muted); margin-bottom: 0.75rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; }
 
+/* Update the file item to be a Flexbox container */
 .file-item {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 6px;
+    margin-bottom: 0.5rem;
     cursor: pointer;
-    font-size: 0.95rem;
-    transition: all 0.2s;
-    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
 }
 
-.file-item:hover { background: #f1f5f9; border-left-color: var(--secondary-color); }
-.file-item.active { background: #ecfdf5; border-left-color: var(--primary-color); color: var(--primary-color); font-weight: 600; }
+.file-item:hover {
+    background: #f8fafc;
+    transform: translateX(4px);
+    border-color: var(--secondary-color);
+}
+
+.file-item.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Ensure the title takes up the remaining space */
+.file-title {
+    flex-grow: 1;
+    font-weight: 500;
+    padding-right: 1rem;
+}
+
+/* The new Professional Download Button Styles */
+.download-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    background: #f1f5f9;
+    color: var(--primary-color); /* UNCC Green */
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.download-icon-btn:hover {
+    background: var(--secondary-color); /* Gold hover */
+    color: white;
+    transform: scale(1.05);
+}
+
+/* If the row is active (green), change the button so it's still visible */
+.file-item.active .download-icon-btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+.file-item.active .download-icon-btn:hover {
+    background: var(--secondary-color);
+}
+
+/* Remove the old wrappers if they are still in your CSS */
+.file-item-wrapper { display: none; }
+
+.download-all-btn {
+    display: flex;             /* NEW: Aligns icon and text */
+    align-items: center;       /* NEW: Vertically centers them */
+    justify-content: center;   /* NEW: Keeps them in the middle of the button */
+    width: 100%;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 0.8rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.download-all-btn:hover {
+    background-color: #d4af37; /* Slightly darker gold */
+    transform: translateY(-2px);
+}
 
 .viewer-pane { flex: 1; padding: 2rem; display: flex; flex-direction: column; background: var(--bg-color); }
 .viewer-pane iframe { width: 100%; height: 100%; border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: white; }
@@ -428,3 +502,25 @@ body {
         min-height: 500px; /* Ensures the document iframe has enough room */
     }
 }
+
+/* Hardcoded HTML Formatting Styles */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.custom-table th {
+    background: var(--primary-color);
+    color: white;
+    text-align: left;
+    padding: 1rem;
+}
+.custom-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+.custom-table tr:last-child td { border-bottom: none; }
