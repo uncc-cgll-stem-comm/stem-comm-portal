@@ -20,7 +20,7 @@ You do not need to touch any website code or format any web links to update thes
 4. At the bottom of the screen, click on either the **Events** or **Library** tab.
 5. Find an empty row and click on the empty cell in **Column C (Title)**.
 6. Paste your copied file into that cell (Press `Ctrl+V` or `Cmd+V`). 
-7. Click the ** ⚙️ Run STEM Script** button located on the spreadsheet. 
+7. Click the **⚙️ Run STEM Script** button located on the spreadsheet. 
 8. **Wait a few seconds:** The script will automatically pull the file's data from Google Drive and fill in all the other columns (like the links, IDs, and correct download formats) for you!
 
 **The 5-Minute Rule (Important!):**
