@@ -1,4 +1,6 @@
-/* style.css */
+/* ==========================================================================
+   1. ROOT VARIABLES & GLOBAL STYLES
+   ========================================================================== */
 :root {
     --primary-color: #005035; /* UNCC Green */
     --secondary-color: #a49665; /* UNCC Gold accent */
@@ -6,24 +8,37 @@
     --text-main: #1e293b;
     --text-muted: #64748b;
     --card-bg: #ffffff;
+    --focus-ring: #2563eb;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Segoe UI', system-ui, sans-serif; 
+}
 
 body { 
     background-color: var(--bg-color); 
     color: var(--text-main); 
     line-height: 1.6; 
-    overflow-y: scroll; /* Add this to stop the scrollbar layout shift! */
+    overflow-y: scroll; 
     overflow-x: hidden;
 }
 
+/* ==========================================================================
+   2. ACCESSIBILITY (ADA COMPLIANCE)
+   ========================================================================== */
+*:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
 
-/* ----------------------------------- */
-/* Official UNCC Branded Header        */
-/* ----------------------------------- */
+/* ==========================================================================
+   3. HEADER & NAVIGATION
+   ========================================================================== */
 .header-tabs {
-    /* Deep UNCC green fading to black on the right */
     background: linear-gradient(to right, #005035 0%, #111111 100%);
     color: white;
     padding: 1.25rem 5%;
@@ -33,485 +48,95 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-.logo-img {
-    height: 45px; /* Keeps the logo cleanly proportioned */
-    display: block;
-}
+.logo-img { height: 45px; }
 
-.tab-links { 
-    list-style: none; 
-    display: flex; 
-    gap: 2.5rem; /* Wide spacing like the official site */
-    margin: 0;
-    align-items: center;
-}
+.tab-links { list-style: none; display: flex; gap: 1.5rem; }
 
 .tab-links button {
-    background: transparent;
-    color: white;
+    background: none;
     border: none;
-    /* We use a transparent bottom border so the text doesn't jump when the gold line appears */
-    border-bottom: 3px solid transparent; 
-    padding: 0.2rem 0; 
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+    color: #e2e8f0;
+    font-weight: 600;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.2s ease;
-    font-style: italic;
+    padding: 0.5rem 0;
+    transition: color 0.2s;
 }
 
-/* Subtle fade when hovering over inactive tabs */
-.tab-links button:hover { 
-    color: #e2e8f0; 
-}
-
-/* The Active Tab - Pure white text with the thick UNCC Gold underline */
+.tab-links button:hover { color: white; }
 .tab-links button.active {
+    color: white;
     border-bottom: 3px solid var(--secondary-color);
-    color: var(--secondary-color);
 }
 
-
-/* ----------------------------------- */
-/* Home & Events View Styling          */
-/* ----------------------------------- */
-.home-block {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 2.5rem;
-    margin: 2rem auto;
-    max-width: 800px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    border-top: 4px solid var(--primary-color);
-}
-
-.home-block h2 { color: var(--primary-color); margin-bottom: 1rem; font-size: 1.8rem;}
-
-.cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem 5%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Updated Event Card Styling - Matches Course Card behaviour */
-.event-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 2rem;
-    /* Updated Box Shadow to match Course Card subtle feel */
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-    border-top: 4px solid var(--secondary-color);
-    cursor: pointer; /* CRUCIAL: Makes whole card look clickable */
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-
-/* Keeping hover styles as previously restored and animated */
-.event-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-.event-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-
-/* Updated spacing to match Library Card structure */
-.event-card h3 { color: var(--primary-color); font-size: 1.4rem; margin-bottom: 0.5rem; }
-.event-card p { margin-bottom: 0.3rem; font-size: 0.95rem; }
-
-/* Style for the NEW muted "Click to view details" text */
-.event-card .click-details-text {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-top: 1rem;
-    margin-bottom: 0;
+/* ==========================================================================
+   4. HOME PAGE CONTENT & BANNER
+   ========================================================================== */
+.hero-image-container { 
+    width: 100%; 
+    height: auto; 
     display: block; 
+    overflow: hidden; 
 }
 
+.hero-image-container img { 
+    width: 100%; 
+    max-width: none; /* Removes the 1400px restriction */
+    height: auto; 
+    display: block; 
+    object-fit: cover; /* Ensures edge-to-edge coverage */
+}
 
-/* ----------------------------------- */
-/* index.html - Old Library Styling    */
-/* ----------------------------------- */
-.hero { text-align: center; padding: 4rem 1rem 2rem; }
+.home-content-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 3rem 4rem;
+    margin: 2rem auto 4rem auto; 
+    max-width: 950px; 
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    border-top: 4px solid var(--secondary-color); 
+}
+
+.home-content-container h2 {
+    color: var(--primary-color); font-style: italic; margin-top: 30px; margin-bottom: 10px;
+}
+
+.page-title { color: var(--primary-color); font-size: 2.2rem; margin-bottom: 20px; line-height: 1.2; }
+.section-heading { color: var(--primary-color); font-style: italic; margin-top: 40px; margin-bottom: 15px; }
+.content-list { margin-bottom: 30px; padding-left: 20px; }
+.content-list li { margin-bottom: 8px; }
+
+.brand-quote {
+    border-left: 4px solid var(--primary-color); 
+    padding-left: 15px; 
+    margin-bottom: 25px; 
+    font-style: italic;
+    background-color: #f1f5f9;
+    padding: 15px 15px 15px 20px;
+    border-radius: 0 4px 4px 0;
+}
+
+.brand-link { color: var(--primary-color); font-weight: bold; text-decoration: underline; }
+.brand-link:hover { color: #003624; }
+.cursor-pointer { cursor: pointer; }
+.loading-text { text-align: center; width: 100%; color: var(--text-muted); font-style: italic; padding: 2rem; }
+
+/* ==========================================================================
+   5. EVENTS & LIBRARY HERO CENTERING
+   ========================================================================== */
+.hero { text-align: center; padding: 3rem 1rem 1rem; }
 .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary-color); }
 .hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
 
-.course-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem 5%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.course-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    border-top: 4px solid var(--secondary-color);
-}
-
-.course-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-.course-card h2 { color: var(--primary-color); font-size: 1.4rem; margin-bottom: 0.5rem; }
-
-/* ----------------------------------- */
-/* course.html - Viewer Styling        */
-/* ----------------------------------- */
-.app-layout { display: flex; height: calc(100vh - 76px); } 
-
-.sidebar {
-    width: 350px;
-    background: var(--card-bg);
-    border-right: 1px solid #e2e8f0;
-    overflow-y: auto;
-    padding: 2rem 1.5rem;
-}
-
-.sidebar h2 { font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--primary-color); padding-bottom: 0.5rem; border-bottom: 2px solid #f1f5f9; }
-
-.module-group { margin-bottom: 1.5rem; }
-.module-title { font-weight: 600; color: var(--text-muted); margin-bottom: 0.75rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; }
-
-/* Update the file item to be a Flexbox container */
-.file-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.8rem 1rem;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.file-item:hover {
-    background: #f8fafc;
-    transform: translateX(4px);
-    border-color: var(--secondary-color);
-}
-
-.file-item.active {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-}
-
-/* Ensure the title takes up the remaining space */
-.file-title {
-    flex-grow: 1;
-    font-weight: 500;
-    padding-right: 1rem;
-}
-
-/* The new Professional Download Button Styles */
-.download-icon-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.4rem;
-    background: #f1f5f9;
-    color: var(--primary-color); /* UNCC Green */
-    border-radius: 4px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.download-icon-btn:hover {
-    background: var(--secondary-color); /* Gold hover */
-    color: white;
-    transform: scale(1.05);
-}
-
-/* If the row is active (green), change the button so it's still visible */
-.file-item.active .download-icon-btn {
-    background: rgba(255,255,255,0.2);
-    color: white;
-}
-.file-item.active .download-icon-btn:hover {
-    background: var(--secondary-color);
-}
-
-/* Remove the old wrappers if they are still in your CSS */
-.file-item-wrapper { display: none; }
-
-.download-all-btn {
-    display: flex;             /* NEW: Aligns icon and text */
-    align-items: center;       /* NEW: Vertically centers them */
-    justify-content: center;   /* NEW: Keeps them in the middle of the button */
-    width: 100%;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    border: none;
-    padding: 0.8rem;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 1.5rem;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-}
-
-.download-all-btn:hover {
-    background-color: #d4af37; /* Slightly darker gold */
-    transform: translateY(-2px);
-}
-
-.viewer-pane { flex: 1; padding: 2rem; display: flex; flex-direction: column; background: var(--bg-color); }
-.viewer-pane iframe { width: 100%; height: 100%; border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: white; }
-
-.empty-state { text-align: center; margin: auto; color: var(--text-muted); }
-
-/* ----------------------------------- */
-/* Home Page - Hero & Mission Layout   */
-/* ----------------------------------- */
-.hero-image-container {
-    width: 100%;
-    height: 450px;
-    background-color: #002015;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
-
-.hero-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.5; /* Dims the image slightly so the white text is readable */
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.hero-overlay {
-    position: relative;
-    z-index: 2;
-    padding: 0 10%;
-    color: white;
-}
-
-.hero-overlay h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
-
-.mission-container {
-    padding: 4rem 10%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.mission-container h2 {
-    font-size: 2.5rem;
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
-    font-style: italic;
-}
-
-.mission-text p {
-    font-size: 1.25rem;
-    line-height: 1.8;
-    color: var(--text-main);
-    white-space: pre-wrap; /* Honors the line breaks from your Google Sheet */
-}
-
-/* ----------------------------------- */
-/* Event Details Page                  */
-/* ----------------------------------- */
-.event-details-container {
-    max-width: 900px;
-    margin: 3rem auto;
-    padding: 3rem;
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.back-btn {
-    background: transparent;
-    color: var(--primary-color);
-    border: none;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 2rem;
-    padding: 0;
-}
-
-.back-btn:hover { text-decoration: underline; }
-
-.event-details-header h1 {
-    font-size: 2.8rem;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.detail-meta {
-    font-size: 1.15rem;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-#detail-image {
-    width: 100%;
-    max-height: 450px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 2.5rem;
-}
-
-.detail-description {
-    font-size: 1.15rem;
-    line-height: 1.8;
-    white-space: pre-wrap; /* Honors the line breaks from your Google Sheet */
-}
-
-/* ----------------------------------- */
-/* Animations & Transitions            */
-/* ----------------------------------- */
-
-/* 1 & 3: Fast fade-in for all Tabs and Detail Views */
-@keyframes fastFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.tab-view {
-    animation: fastFadeIn 0.25s ease-in-out;
-}
-
-/* 2: Subtle slide-up and fade-in for all Cards */
-/* 2: Subtle slide-up and fade-in for all Cards */
-@keyframes slideUpFade {
-    from { 
-        opacity: 0; 
-        transform: translateY(15px); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
-    }
-}
-
-/* Use 'backwards' instead of 'forwards' so the hover effect isn't blocked! */
-.event-card, .course-card {
-    animation: slideUpFade 0.35s ease-out backwards;
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Keeps the hover smooth */
-}
-
-/* Restoring your beautiful, original hover effects */
-.course-card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
-}
-
-.event-card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
-}
-
-
-/* ----------------------------------- */
-/* Mobile Responsiveness (Screens < 768px) */
-/* ----------------------------------- */
-@media (max-width: 768px) {
-    
-    /* 1. Fix the Header Collision */
-    .header-tabs {
-        flex-direction: column; /* Stacks the logo on top of the tabs */
-        gap: 1rem;
-        padding: 1rem;
-        text-align: center;
-    }
-    
-    .tab-links {
-        flex-wrap: wrap; /* Allows tabs to drop to a new line if needed */
-        justify-content: center;
-        gap: 1rem;
-    }
-    
-    .tab-links button {
-        font-size: 0.95rem; /* Slightly smaller text for mobile */
-    }
-
-    /* 2. Fix the Hero Image (Scales poster naturally without cropping) */
-    .hero-image-container {
-        height: auto; /* Removes the fixed height */
-        display: block; /* Removes flexbox to allow natural scaling */
-    }
-    
-    .hero-image-container img {
-        position: relative; /* Takes it out of the background */
-        height: auto; /* Allows the image to scale its height naturally */
-        object-fit: contain; /* Forces the whole image to fit on the screen */
-        opacity: 1; /* Makes the poster fully visible */
-    }
-    
-    .hero-overlay h1 {
-        font-size: 2.2rem;
-        display: none; /* Optional: Hides the overlapping text since your poster already has text! */
-    }
-
-    /* 3. Fix the Grids (Forces 1 column on narrow screens) */
-    .cards-container, .course-grid {
-        grid-template-columns: 1fr;
-        padding: 1.5rem 5%;
-    }
-
-    /* 4. Fix Event Details Spacing */
-    .event-details-container {
-        margin: 1rem;
-        padding: 1.5rem;
-    }
-    
-    .event-details-header h1 {
-        font-size: 2rem;
-    }
-
-    /* 5. Fix the Course Viewer Layout */
-    .app-layout {
-        flex-direction: column; /* Stacks the sidebar on top of the viewer */
-        height: auto; 
-    }
-    
-    .sidebar {
-        width: 100%;
-        max-height: 250px; /* Prevents the sidebar from taking up the whole screen */
-        border-right: none;
-        border-bottom: 2px solid #e2e8f0;
-    }
-    
-    .viewer-pane {
-        padding: 1rem;
-        min-height: 500px; /* Ensures the document iframe has enough room */
-    }
-}
-
-/* Hardcoded HTML Formatting Styles */
+/* ==========================================================================
+   6. TABLES & RESPONSIVE WRAPPERS
+   ========================================================================== */
+.table-responsive-wrapper { overflow-x: auto; width: 100%; margin-bottom: 40px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 .custom-table {
     width: 100%;
     border-collapse: collapse;
     margin: 1.5rem 0;
-    background: white;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    overflow: hidden;
+    background: transparent;
 }
 .custom-table th {
     background: var(--primary-color);
@@ -525,37 +150,127 @@ body {
 }
 .custom-table tr:last-child td { border-bottom: none; }
 
-/* Mobile Optimization for Course Viewer - CORRECTED CLASSES */
+/* ==========================================================================
+   7. APP LAYOUT & COURSE VIEWER
+   ========================================================================== */
+.app-layout { display: flex; height: calc(100vh - 75px); }
+
+.sidebar { width: 300px; background: white; border-right: 1px solid #e2e8f0; padding: 1.5rem; overflow-y: auto; }
+.viewer-pane { flex: 1; background: var(--bg-color); display: flex; flex-direction: column; }
+.empty-state { margin: auto; text-align: center; color: var(--text-muted); }
+#content-frame { width: 100%; height: 100%; border: none; display: none; }
+
+.back-btn { background: none; border: none; color: var(--primary-color); font-weight: 600; cursor: pointer; margin-bottom: 1.5rem; display: inline-block; }
+
+.download-all-btn { width: 100%; padding: 0.75rem; background: var(--primary-color); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.download-all-btn:hover { background: #003624; }
+
+.module-title { font-weight: bold; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; margin: 1.5rem 0 0.5rem 0; letter-spacing: 0.05em; }
+
+.file-item { padding: 0.75rem; background: white; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 0.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
+.file-item:hover { border-color: var(--primary-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.file-item.active { border-color: var(--primary-color); background: #f0fdf4; }
+
+/* ENHANCEMENT: Restored Gold Hover for Library Downloads */
+.download-icon-btn { 
+    color: var(--primary-color); 
+    background: #f1f5f9; 
+    border: none; 
+    cursor: pointer; 
+    padding: 6px; 
+    border-radius: 4px;
+    display: flex; 
+    transition: all 0.2s ease; 
+}
+.download-icon-btn:hover { 
+    color: white !important; 
+    background-color: var(--secondary-color) !important; 
+    transform: scale(1.05); 
+}
+
+/* ==========================================================================
+   8. EVENTS & LIBRARY GRIDS 
+   ========================================================================== */
+/* ENHANCEMENT: Increased top padding to 4rem to fix Back Button spacing */
+.events-container, .details-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4rem 2rem 2rem 2rem; 
+}
+
+.events-grid, .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+
+.event-card, .course-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    cursor: pointer;
+    border-top: 4px solid var(--secondary-color); 
+    animation: slideUpFade 0.35s ease-out backwards; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover, .course-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+.click-details-text { color: var(--primary-color); font-weight: 600; font-size: 0.9rem; margin-top: 1rem; }
+.detail-meta { background: white; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid var(--secondary-color); }
+.detail-description { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); line-height: 1.8; }
+
+/* ==========================================================================
+   9. ANIMATION KEYFRAMES (NEW: Scroll Animations)
+   ========================================================================== */
+.tab-view { animation: fastFadeIn 0.25s ease-in-out; }
+
+@keyframes fastFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUpFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ENHANCEMENT: Scroll Pop-Up Classes */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    will-change: opacity, transform;
+}
+.scroll-animate.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   10. MOBILE OPTIMIZATION
+   ========================================================================== */
 @media (max-width: 768px) {
-    /* 1. Stack the sidebar and viewer vertically */
-    .app-layout {
-        display: flex;
+    /* Stacks the logo on top and the navigation links below */
+    .header-tabs {
         flex-direction: column;
-        height: auto !important; 
+        justify-content: center;
+        gap: 1.5rem;
+        padding: 1.5rem 1rem;
     }
 
-    /* 2. Force sidebar and viewer to full width */
-    .sidebar, .viewer-pane {
-        width: 100% !important;
-        flex: none;
+    /* Centers the buttons and lets them wrap to a new line if needed */
+    .tab-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
     }
 
-    /* 3. Limit sidebar height so it doesn't bury the viewer */
-    .sidebar {
-        max-height: 400px; /* Adjust this if you want the list longer/shorter */
-        border-right: none;
-        border-bottom: 2px solid #e2e8f0;
+    /* Makes the tap target a bit friendlier for fingers */
+    .tab-links button {
+        font-size: 0.95rem;
+        padding: 0.5rem;
     }
-
-    /* 4. Ensure viewer has enough height to be readable */
-    .viewer-pane {
-        height: 600px !important; 
-        padding: 10px;
+    .home-content-container h2 { 
+        margin-top: 2rem; 
+        margin-bottom: 0.75rem; 
+        font-size: 1.5rem;
+        color: var(--text-main); 
     }
-
-    /* 5. Force the iframe to fill the viewer container */
-    .viewer-pane iframe {
-        height: 100% !important;
-        width: 100% !important;
-    }
+    .events-container, .details-container { padding: 2rem 1rem; }
+    .app-layout { display: flex; flex-direction: column; height: auto !important; }
+    .sidebar, .viewer-pane { width: 100% !important; flex: none; }
+    .sidebar { max-height: 400px; border-right: none; border-bottom: 2px solid #e2e8f0; }
+    .viewer-pane { height: 600px !important; padding: 10px; }
+    .viewer-pane iframe { height: 100% !important; width: 100% !important; }
 }
