@@ -8,8 +8,8 @@ const LIBRARY_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTh_-hm
 // SCROLL ANIMATION OBSERVER (Auto-Applies to Home Content)
 // ============================================================================
 function initScrollAnimations() {
-    // Automatically find all text elements on the home page and add the animation class
-    const homeElements = document.querySelectorAll('.home-content-container h2, .home-content-container p, .home-content-container ul, .home-content-container blockquote, .home-content-container .table-responsive-wrapper');
+    // Added .team-member so the photos get the animation too!
+    const homeElements = document.querySelectorAll('.home-content-container h2, .home-content-container p, .home-content-container ul, .home-content-container blockquote, .home-content-container .table-responsive-wrapper, .team-member');
     
     homeElements.forEach(el => {
         el.classList.add('scroll-animate');
@@ -24,7 +24,7 @@ function initScrollAnimations() {
         });
     }, { 
         threshold: 0.1,
-        rootMargin: "0px 0px -20px 0px" // Triggers slightly before element enters view
+        rootMargin: "0px 0px -20px 0px" 
     });
 
     document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
@@ -94,9 +94,22 @@ function renderEventsView(data) {
     const grid = document.getElementById('events-grid');
     grid.innerHTML = ''; 
 
-    data.forEach((row) => {
-        if (!row.Event_Name) return; 
+    // 1. Filter out any blank rows from the Google Sheet
+    const validEvents = data.filter(row => row.Event_Name && row.Event_Name.trim() !== '');
 
+    // 2. Check if there are NO upcoming events
+    if (validEvents.length === 0) {
+        grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid var(--secondary-color); animation: slideUpFade 0.4s ease-out backwards;">
+                <h3 style="color: var(--primary-color); font-size: 1.5rem; margin-bottom: 1rem;">Stay Tuned for Future Events!</h3>
+                <p style="font-size: 1.1rem; color: var(--text-muted);">We are currently planning our next round of exciting STEM communication workshops. <br>In the meantime, scroll down to explore our past events and see what the program is all about!</p>
+            </div>
+        `;
+        return; // Stop the function here so it doesn't try to build empty cards
+    }
+
+    // 3. If there ARE events, build the cards normally
+    validEvents.forEach((row) => {
         const card = document.createElement('div');
         card.className = 'event-card'; 
         
@@ -128,15 +141,45 @@ function renderLibraryView(data) {
     const uniqueCourses = [...new Set(data.map(row => row.Course).filter(Boolean))];
 
     uniqueCourses.forEach(courseName => {
+        // 1. Create a dictionary mapping the exact course names to the creator's image file
+        const creatorImages = {
+            'The Cognitive Science of Communication': 'images/team-members/markant.png',
+            'Talking about STEM Outside the Academy': 'images/team-members/gabor.jpeg',
+            'Effective STEM Communication Across Cultures and Disciplines': 'images/team-members/sandeep.png',
+            'Effective STEM Writing for Expert and General Audiences': 'images/team-members/angela.jpg',
+            'Creating Effective STEM Visuals and Videos NCA': 'images/team-members/tom.png',
+            'Fighting Science Misinformation on Social Media (and Beyond) NCA ': 'images/team-members/melanie.png'
+        };
+
+        // 2. Look up the image, or use a default if it's a brand new course
+        const imgSrc = creatorImages[courseName] || 'images/banners-logos/cgll-logo.jpeg';
+
+        // 3. Build the card with the new header layout
         const card = document.createElement('div');
-        card.className = 'course-card';
+        card.className = 'course-card'; 
+        
         card.innerHTML = `
-            <h2>${courseName}</h2>
-            <p>Click to view modules and resources.</p>
+            <div class="course-card-header">
+                <img src="${imgSrc}" alt="Course Creator" class="creator-img">
+                <h2>${courseName}</h2>
+            </div>
         `;
         
         card.addEventListener('click', () => showCourseDetails(courseName, data));
         grid.appendChild(card);
+    });
+}
+
+// New function to open a course directly from the Home Page table
+function openCourseFromHome(courseName) {
+    // 1. Visually change the active tab in the header
+    document.querySelectorAll('.tab-links button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('btn-library').classList.add('active');
+    
+    // 2. Fetch the library data, open the specific course, and scroll to top
+    fetchData(LIBRARY_CSV_URL, 'stemLibraryData', (data) => {
+        showCourseDetails(courseName, data);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 

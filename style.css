@@ -72,19 +72,39 @@ body {
 /* ==========================================================================
    4. HOME PAGE CONTENT & BANNER
    ========================================================================== */
-.hero-image-container { 
-    width: 100%; 
-    height: auto; 
+.hero-image-container img { 
+    width: 65%; 
+    max-width: 850px; /* Restricts the banner from stretching too far */
+    margin: 2rem auto; 
     display: block; 
-    overflow: hidden; 
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
 .hero-image-container img { 
-    width: 100%; 
+    width: 65%; 
     max-width: none; /* Removes the 1400px restriction */
     height: auto; 
     display: block; 
     object-fit: cover; /* Ensures edge-to-edge coverage */
+}
+
+/* Team Photos Layout */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+    text-align: center;
+}
+.team-member img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--secondary-color);
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .home-content-container {
@@ -215,6 +235,60 @@ body {
 .click-details-text { color: var(--primary-color); font-weight: 600; font-size: 0.9rem; margin-top: 1rem; }
 .detail-meta { background: white; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid var(--secondary-color); }
 .detail-description { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); line-height: 1.8; }
+
+/* PAST EVENT CARDS (Images touch the edges, 0 padding) */
+.past-event-card {
+    background: white;
+    border-radius: 12px;
+    padding: 0; /* No padding so the image touches the top corners */
+    overflow: hidden; 
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    border-top: 4px solid var(--secondary-color); 
+    animation: slideUpFade 0.35s ease-out backwards; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.past-event-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+
+.past-event-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.past-event-content {
+    padding: 1.5rem; /* Padding is applied specifically to the text area underneath the image */
+}
+
+.past-event-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+/* Course Card Creator Profiles */
+.course-card-header {
+    display: flex;
+    align-items: center; /* Vertically centers the text with the image */
+    gap: 1rem;           /* Space between the picture and the text */
+}
+
+.creator-img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;  /* This makes the image a perfect circle! */
+    object-fit: cover;   /* Ensures the image doesn't stretch or warp */
+    border: 3px solid var(--secondary-color); /* Adds a nice UNCC Gold ring around the photo */
+    flex-shrink: 0;      /* Prevents the circle from squishing on small screens */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.course-card-header h2 {
+    margin: 0; /* Removes default margin so it aligns perfectly with the photo */
+    font-size: 1.25rem;
+    color: var(--primary-color);
+}
 
 /* ==========================================================================
    9. ANIMATION KEYFRAMES (NEW: Scroll Animations)
