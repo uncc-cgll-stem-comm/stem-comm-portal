@@ -348,3 +348,66 @@ body {
     .viewer-pane { height: 600px !important; padding: 10px; }
     .viewer-pane iframe { height: 100% !important; width: 100% !important; }
 }
+
+/* =========================================
+   Footer Strip (With Logo)
+   ========================================= */
+.site-footer {
+    background: linear-gradient(to right, #005035, #111111); 
+    color: #ffffff;
+    padding: 30px 5%; /* Slightly tighter padding so the logo fits snugly */
+    margin-top: 60px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1400px; 
+    margin: 0 auto;
+}
+
+/* --- New Logo Styling --- */
+.footer-brand {
+    display: flex;
+    align-items: center;
+}
+
+.footer-logo {
+    max-height: 50px; /* Keeps the logo at a professional, manageable size */
+    width: auto;      /* Ensures the logo doesn't stretch weirdly */
+    object-fit: contain;
+}
+/* ------------------------ */
+
+.footer-socials {
+    display: flex;
+    gap: 25px; 
+}
+
+.footer-socials a {
+    color: #ffffff;
+    font-size: 1.6rem; 
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.footer-socials a:hover {
+    color: var(--secondary-color, #f1c40f); 
+    transform: translateY(-3px); 
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 30px 20px; 
+    }
+    .footer-content {
+        flex-direction: column;
+        gap: 25px; /* Adds space between the logo and icons on mobile */
+        text-align: center;
+    }
+    .footer-logo {
+        max-height: 45px; /* Scales the logo down slightly for small phone screens */
+    }
+}
